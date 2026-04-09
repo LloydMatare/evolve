@@ -1,0 +1,155 @@
+# Evolve ICT Summit 2026 Website
+## Problem Statement
+Create a modern, feature-rich website for the Evolve ICT Summit 2026 that combines the best elements from reference websites (MWC Barcelona, ICT Africa Summit, Viva Technology) with the branding and content from the provided images. The site needs to showcase the event (June 11-12, 2026 at HICC, Zimbabwe) with the theme "Empowering Africa's Digital Leap".
+## Current State
+The project has:
+* Next.js 15 + Payload CMS 3.0 setup
+* Tailwind CSS v4 with shadcn/ui components
+* Basic homepage with hero section
+* Simple navbar component
+* Existing UI components from shadcn/ui (Sheet, Button, etc.)
+Gaps:
+* No comprehensive sections (About, Purpose, Objectives, Speakers, etc.)
+* Missing countdown timer
+* No ticket/registration system
+* Missing sponsor/exhibitor showcase
+* No phase timeline visualization
+* Limited responsive design optimization
+* No animations or modern UI interactions
+## Proposed Changes
+### 1. Enhanced Homepage (src/app/(app)/page.tsx)
+Create a comprehensive single-page website with the following sections:
+#### Hero Section
+* Full-screen hero with brand colors (navy blue #1e3a8a, gold #fbbf24)
+* Animated title "EVOLVE ICT SUMMIT 2026"
+* Event date: "11-12 JUNE 2026"
+* Location: "Harare International Conference Centre (HICC)"
+* Theme tagline: "Empowering Africa's Digital Leap"
+* CTA button for registration
+* Background with geometric patterns inspired by the document images
+#### Synopsis Section
+* Event overview from the document
+* Theme, dates, venue, organizer info
+* Visual card layout
+#### Overview Section
+* Three-column layout with key points:
+    * Premier digital transformation forum description
+    * Bold collaboration across borders call-to-action
+    * Zimbabwe as epicenter positioning
+* Images of professionals (from document aesthetic)
+#### Purpose Section
+* Objective statement with Africa map visual
+* Three key points:
+    * Collaborative platform between stakeholders
+    * Showcase for African-led innovation
+    * Catalyst for regional policy dialogue
+#### Objectives Section (Split View)
+* Left column: Strategic Objectives (5 items)
+* Right column: Operational Objectives (4 items)
+* Clean numbered list layout
+#### Methodology/Timeline Section
+* Planning & Co-ordination table showing 5 phases
+* Phase details with periods, focus, and deliverables
+* Professional table design
+#### Strategic Rollout Section
+* 4-phase approach visualization:
+    * Phase 1: Visibility & Community Building (Now-Jan 2026)
+    * Phase 2: Engagement & Conversion (Nov 2025-Apr 2026)
+    * Phase 3: Activation & Amplification (Apr-Event Week 2026)
+    * Phase 4: Post Summit Momentum (Jul-Aug 2026)
+* Timeline graphic with key activities per phase
+#### Countdown Timer
+* Live countdown to June 11, 2026
+* Days, hours, minutes, seconds display
+* Prominent placement near hero section
+#### Speakers Section
+* Grid layout for speaker profiles
+* Placeholder for speaker images and bios
+* "Coming Soon" state
+#### Ticket Pricing Section
+* Three tiers from document:
+    * Early Bird (before Apr 30): $150
+    * Early Bird (before May 30): $175
+    * Regular (from Jun 1): $200
+* Cutoff date: June 30, 2025
+* Exhibition booth information
+* Visual pricing cards with CTA buttons
+#### Sponsors & Exhibitors Section
+* Logo grid for sponsors (30+ partners target)
+* Exhibition information (100 exhibitors target)
+* "Become a Sponsor" CTA
+#### Contact Section
+* Contact form
+* Event details summary
+* Social media links
+### 2. Update Navbar (src/components/navbar.tsx)
+* Add Evolve Africa logo
+* Update navigation: Home, About, Program, Speakers, Tickets, Contact
+* Smooth scroll to sections
+* Sticky header with background blur on scroll
+* Prominent "Register" button
+### 3. New Components to Create
+#### Countdown Timer Component
+* `src/components/countdown-timer.tsx`
+* Client component with real-time updates
+* Modern card design with animations
+#### Pricing Card Component
+* `src/components/pricing-card.tsx`
+* Reusable card for ticket tiers
+* Hover effects and animations
+#### Timeline Component
+* `src/components/phase-timeline.tsx`
+* Visual representation of 4 phases
+* Progressive disclosure of details
+#### Stats Counter Component
+* `src/components/stats-counter.tsx`
+* Animated numbers for key metrics (2000+ delegates, 100 exhibitors, 30+ sponsors)
+#### Contact Form Component
+* `src/components/contact-form.tsx`
+* React Hook Form integration
+* Form validation with Zod
+### 4. Styling Updates
+#### Custom Color Scheme (src/app/(app)/styles.css)
+Add brand colors:
+* Primary Navy: #1e3a8a (from hero images)
+* Secondary Gold: #fbbf24 (accent)
+* Dark Navy: #0f172a
+* Light sections: #f8fafc
+* Geometric pattern backgrounds
+#### Typography
+* Bold, modern font hierarchy
+* Large impactful headings
+* Clear section differentiation
+### 5. Animations & Interactions
+* Smooth scroll behavior
+* Fade-in animations on scroll (using Intersection Observer)
+* Hover effects on cards and buttons
+* Parallax effects on hero section
+* Animated geometric backgrounds
+### 6. Responsive Design
+* Mobile-first approach
+* Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
+* Touch-friendly interactive elements
+* Optimized images for mobile
+### 7. Payload CMS Collections (Future)
+Create collections for dynamic content:
+* Speakers collection (name, bio, photo, role)
+* Sponsors collection (name, logo, tier, url)
+* Schedule collection (day, time, session, speaker)
+* Exhibitors collection (name, booth, description)
+### 8. SEO & Meta Tags
+* Update metadata in layout.tsx
+* OpenGraph tags for social sharing
+* Structured data for event
+## Implementation Order
+1. Update color scheme and CSS variables
+2. Create countdown timer component
+3. Create pricing card component
+4. Create timeline/phase component
+5. Create stats counter component
+6. Update homepage with all sections
+7. Update navbar with proper navigation
+8. Add scroll animations
+9. Create contact form component
+10. Test responsive design across devices
+11. Optimize performance and images

@@ -69,6 +69,16 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    registrations: Registration;
+    tickets: Ticket;
+    payments: Payment;
+    speakers: Speaker;
+    'speaker-applications': SpeakerApplication;
+    programs: Program;
+    blogs: Blog;
+    'previous-summits': PreviousSummit;
+    gallery: Gallery;
+    'school-summit': SchoolSummit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,21 +88,28 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
+    tickets: TicketsSelect<false> | TicketsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    speakers: SpeakersSelect<false> | SpeakersSelect<true>;
+    'speaker-applications': SpeakerApplicationsSelect<false> | SpeakerApplicationsSelect<true>;
+    programs: ProgramsSelect<false> | ProgramsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
+    'previous-summits': PreviousSummitsSelect<false> | PreviousSummitsSelect<true>;
+    gallery: GallerySelect<false> | GallerySelect<true>;
+    'school-summit': SchoolSummitSelect<false> | SchoolSummitSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {};
   globalsSelect: {};
   locale: null;
-  widgets: {
-    collections: CollectionsWidget;
-  };
   user: User;
   jobs: {
     tasks: unknown;
@@ -122,7 +139,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,7 +164,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +180,584 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations".
+ */
+export interface Registration {
+  id: number;
+  email: string;
+  type: 'attendee' | 'sponsor' | 'exhibitor';
+  status?: ('pending' | 'approved' | 'rejected' | 'paid' | 'cancelled') | null;
+  orderId?: string | null;
+  amount: number;
+  paymentMethod?: ('card' | 'mobile' | 'bank' | 'pending') | null;
+  attendeeDetails?: {
+    fullName: string;
+    phone: string;
+    organization: string;
+    position: string;
+    country: string;
+    ticketType: 'early-bird-1' | 'early-bird-2' | 'regular';
+    dietaryRestrictions?: string | null;
+  };
+  sponsorDetails?: {
+    companyName: string;
+    contactPerson: string;
+    phone: string;
+    website?: string | null;
+    sponsorshipTier: 'platinum' | 'gold' | 'silver' | 'bronze';
+    companyDescription: string;
+    numberOfTeamMembers: number;
+    teamMembers: string;
+    interestedInBooth?: boolean | null;
+  };
+  exhibitorDetails?: {
+    companyName: string;
+    contactPerson: string;
+    phone: string;
+    website?: string | null;
+    industry: string;
+    productsServices: string;
+    boothSize: 'small' | 'medium' | 'large';
+    boothNumber?: string | null;
+    numberOfTeamMembers: number;
+    teamMembers: string;
+    specialRequirements?: string | null;
+  };
+  qrCode?: (number | null) | Media;
+  paymentProof?: (number | null) | Media;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tickets".
+ */
+export interface Ticket {
+  id: number;
+  name: string;
+  description?: string | null;
+  type: 'attendee' | 'sponsor' | 'exhibitor';
+  subType?:
+    | (
+        | 'early-bird-1'
+        | 'early-bird-2'
+        | 'regular'
+        | 'platinum'
+        | 'gold'
+        | 'silver'
+        | 'bronze'
+        | 'small'
+        | 'medium'
+        | 'large'
+      )
+    | null;
+  price: number;
+  quantity: number;
+  available?: number | null;
+  earlyBirdEnd?: string | null;
+  benefits?:
+    | {
+        feature?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  registration: number | Registration;
+  order_id: string;
+  amount: number;
+  currency: string;
+  paymentMethod: 'paynow' | 'card' | 'mobile' | 'bank';
+  status: 'initiated' | 'pending' | 'paid' | 'failed' | 'cancelled';
+  pollUrl?: string | null;
+  instructions?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  paidAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speakers".
+ */
+export interface Speaker {
+  id: number;
+  name: string;
+  photo?: (number | null) | Media;
+  organization: string;
+  designation: string;
+  bio: string;
+  category?: ('keynote' | 'panelist' | 'workshop' | 'moderator') | null;
+  expertise?:
+    | {
+        topic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  website?: string | null;
+  email?: string | null;
+  featured?: boolean | null;
+  session?: {
+    title?: string | null;
+    time?: string | null;
+    location?: string | null;
+  };
+  sessions?: (number | Program)[] | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  title: string;
+  description: string;
+  day: 'day-1' | 'day-2';
+  /**
+   * Specific date of the session
+   */
+  date?: string | null;
+  startTime: string;
+  endTime: string;
+  /**
+   * e.g., 1h, 30m, 1.5h
+   */
+  duration: string;
+  type:
+    | 'keynote'
+    | 'panel'
+    | 'workshop'
+    | 'talk'
+    | 'networking'
+    | 'registration'
+    | 'opening'
+    | 'closing'
+    | 'lunch'
+    | 'break';
+  track?: ('main' | 'ai' | 'security' | 'cloud' | 'fintech' | 'entrepreneurship' | 'social') | null;
+  speaker?: (number | null) | Speaker;
+  speakerName?: string | null;
+  speakerTitle?: string | null;
+  venue:
+    | 'main-auditorium'
+    | 'room-a'
+    | 'room-b'
+    | 'room-c'
+    | 'exhibition-hall'
+    | 'dining-hall'
+    | 'networking-lounge'
+    | 'grand-ballroom'
+    | 'main-lobby';
+  /**
+   * e.g., All attendees, 500 attendees, Invitation only
+   */
+  capacity?: string | null;
+  featured?: boolean | null;
+  color?:
+    | (
+        | 'bg-blue-50 border-blue-200'
+        | 'bg-purple-50 border-purple-200'
+        | 'bg-amber-50 border-amber-200'
+        | 'bg-green-50 border-green-200'
+        | 'bg-red-50 border-red-200'
+        | 'bg-indigo-50 border-indigo-200'
+        | 'bg-yellow-50 border-yellow-200'
+        | 'bg-gray-50 border-gray-200'
+        | 'bg-cyan-50 border-cyan-200'
+      )
+    | null;
+  /**
+   * Link for session registration (optional)
+   */
+  registrationLink?: string | null;
+  materials?:
+    | {
+        title?: string | null;
+        file?: (number | null) | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  notes?: string | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speaker-applications".
+ */
+export interface SpeakerApplication {
+  id: number;
+  name: string;
+  email: string;
+  organization: string;
+  designation: string;
+  bio: string;
+  category?: ('keynote' | 'panelist' | 'workshop' | 'moderator') | null;
+  expertise?:
+    | {
+        topic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  website?: string | null;
+  session?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: number;
+  title: string;
+  /**
+   * URL-friendly version of the title (e.g., digital-transformation-africa)
+   */
+  slug: string;
+  /**
+   * Short summary of the blog post (2-3 sentences)
+   */
+  excerpt: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  featuredImage: number | Media;
+  author: number | User;
+  /**
+   * Name to display publicly (can be different from user account)
+   */
+  authorName: string;
+  /**
+   * e.g., Senior Editor, Tech Writer, etc.
+   */
+  authorTitle?: string | null;
+  /**
+   * Brief biography of the author
+   */
+  authorBio?: string | null;
+  /**
+   * Profile picture of the author
+   */
+  authorAvatar?: (number | null) | Media;
+  category:
+    | 'technology-trends'
+    | 'digital-transformation'
+    | 'industry-insights'
+    | 'startup-ecosystem'
+    | 'cybersecurity'
+    | 'ai-ml'
+    | 'fintech'
+    | 'event-updates'
+    | 'success-stories'
+    | 'policy-regulation';
+  /**
+   * Add relevant keywords for better discoverability
+   */
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Estimated reading time in minutes
+   */
+  readTime: number;
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Date when the blog post will be/was published
+   */
+  publishedAt?: string | null;
+  featured?: boolean | null;
+  /**
+   * Mark as trending to highlight on the blog page
+   */
+  trending?: boolean | null;
+  likes?: number | null;
+  comments?: number | null;
+  /**
+   * Title for SEO purposes (optional)
+   */
+  metaTitle?: string | null;
+  /**
+   * Description for SEO purposes (optional)
+   */
+  metaDescription?: string | null;
+  views?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "previous-summits".
+ */
+export interface PreviousSummit {
+  id: number;
+  /**
+   * e.g., 2025, 2024
+   */
+  year: string;
+  /**
+   * e.g., Summit 2025
+   */
+  title: string;
+  /**
+   * Main theme of the summit
+   */
+  theme: string;
+  stats: {
+    /**
+     * e.g., 1,500+
+     */
+    delegates: string;
+    /**
+     * e.g., 50+
+     */
+    speakers: string;
+    /**
+     * e.g., 80+
+     */
+    exhibitors: string;
+    /**
+     * e.g., 30+
+     */
+    startups: string;
+    /**
+     * e.g., 25+
+     */
+    countries: string;
+    /**
+     * e.g., 40+
+     */
+    partnerships: string;
+    /**
+     * Number of days, e.g., 2
+     */
+    days?: string | null;
+  };
+  /**
+   * Key highlights and memorable moments from the summit
+   */
+  highlights: {
+    highlight: string;
+    id?: string | null;
+  }[];
+  /**
+   * Focus areas and topics covered
+   */
+  themes: {
+    theme: string;
+    id?: string | null;
+  }[];
+  color:
+    | 'from-blue-500 to-cyan-400'
+    | 'from-purple-500 to-pink-400'
+    | 'from-green-500 to-teal-400'
+    | 'from-orange-500 to-red-400'
+    | 'from-indigo-500 to-purple-400';
+  gradient:
+    | 'bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500'
+    | 'bg-gradient-to-br from-purple-500 via-purple-600 to-pink-500'
+    | 'bg-gradient-to-br from-green-500 via-green-600 to-teal-500'
+    | 'bg-gradient-to-br from-orange-500 via-orange-600 to-red-500'
+    | 'bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-500';
+  /**
+   * Images from the summit
+   */
+  images?:
+    | {
+        image: number | Media;
+        title: string;
+        description: string;
+        category:
+          | 'Ceremony'
+          | 'Speeches'
+          | 'Exhibition'
+          | 'Panels'
+          | 'Networking'
+          | 'Competition'
+          | 'Awards'
+          | 'Workshops';
+        /**
+         * Starting number of likes (for display purposes)
+         */
+        likes?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Videos from the summit
+   */
+  videos?:
+    | {
+        thumbnail?: (number | null) | Media;
+        /**
+         * YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+         */
+        videoUrl: string;
+        title: string;
+        description: string;
+        category: 'Highlights' | 'Speeches' | 'Panels' | 'Exhibition' | 'Competition' | 'Interviews';
+        /**
+         * Starting number of likes (for display purposes)
+         */
+        likes?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Higher numbers appear first (most recent)
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery".
+ */
+export interface Gallery {
+  id: number;
+  type: 'image' | 'video';
+  title: string;
+  description: string;
+  category:
+    | 'Ceremony'
+    | 'Speeches'
+    | 'Exhibition'
+    | 'Panels'
+    | 'Networking'
+    | 'Competition'
+    | 'Awards'
+    | 'Workshops'
+    | 'Youth'
+    | 'Behind Scenes'
+    | 'Media'
+    | 'Highlights';
+  year: number;
+  /**
+   * Upload the image file
+   */
+  image?: (number | null) | Media;
+  /**
+   * YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+   */
+  videoUrl?: string | null;
+  /**
+   * Custom thumbnail for the video (optional)
+   */
+  thumbnail?: (number | null) | Media;
+  /**
+   * Number of views for the video
+   */
+  views?: number | null;
+  /**
+   * Initial number of likes
+   */
+  likes?: number | null;
+  /**
+   * Mark as featured to highlight in the gallery
+   */
+  featured?: boolean | null;
+  status: 'draft' | 'published';
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "school-summit".
+ */
+export interface SchoolSummit {
+  id: number;
+  title: string;
+  section:
+    | 'objectives'
+    | 'sub-themes'
+    | 'target-audience'
+    | 'why-attend'
+    | 'programme-highlights'
+    | 'expected-outcomes'
+    | 'featured-cards';
+  description: string;
+  objectiveIcon?: ('cpu' | 'briefcase' | 'lightbulb' | 'heart-handshake') | null;
+  skills?:
+    | {
+        skill: string;
+        id?: string | null;
+      }[]
+    | null;
+  cardImage?: (number | null) | Media;
+  /**
+   * YouTube embed URL or video URL
+   */
+  cardVideo?: string | null;
+  videoType?: ('youtube' | 'direct') | null;
+  /**
+   * URL to link to when card is clicked
+   */
+  cardLink?: string | null;
+  /**
+   * Lower numbers appear first
+   */
+  order?: number | null;
+  status: 'draft' | 'published';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +774,60 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'registrations';
+        value: number | Registration;
+      } | null)
+    | ({
+        relationTo: 'tickets';
+        value: number | Ticket;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
+      } | null)
+    | ({
+        relationTo: 'speakers';
+        value: number | Speaker;
+      } | null)
+    | ({
+        relationTo: 'speaker-applications';
+        value: number | SpeakerApplication;
+      } | null)
+    | ({
+        relationTo: 'programs';
+        value: number | Program;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: number | Blog;
+      } | null)
+    | ({
+        relationTo: 'previous-summits';
+        value: number | PreviousSummit;
+      } | null)
+    | ({
+        relationTo: 'gallery';
+        value: number | Gallery;
+      } | null)
+    | ({
+        relationTo: 'school-summit';
+        value: number | SchoolSummit;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +837,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +860,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -277,6 +908,338 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations_select".
+ */
+export interface RegistrationsSelect<T extends boolean = true> {
+  email?: T;
+  type?: T;
+  status?: T;
+  orderId?: T;
+  amount?: T;
+  paymentMethod?: T;
+  attendeeDetails?:
+    | T
+    | {
+        fullName?: T;
+        phone?: T;
+        organization?: T;
+        position?: T;
+        country?: T;
+        ticketType?: T;
+        dietaryRestrictions?: T;
+      };
+  sponsorDetails?:
+    | T
+    | {
+        companyName?: T;
+        contactPerson?: T;
+        phone?: T;
+        website?: T;
+        sponsorshipTier?: T;
+        companyDescription?: T;
+        numberOfTeamMembers?: T;
+        teamMembers?: T;
+        interestedInBooth?: T;
+      };
+  exhibitorDetails?:
+    | T
+    | {
+        companyName?: T;
+        contactPerson?: T;
+        phone?: T;
+        website?: T;
+        industry?: T;
+        productsServices?: T;
+        boothSize?: T;
+        boothNumber?: T;
+        numberOfTeamMembers?: T;
+        teamMembers?: T;
+        specialRequirements?: T;
+      };
+  qrCode?: T;
+  paymentProof?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tickets_select".
+ */
+export interface TicketsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  type?: T;
+  subType?: T;
+  price?: T;
+  quantity?: T;
+  available?: T;
+  earlyBirdEnd?: T;
+  benefits?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  registration?: T;
+  order_id?: T;
+  amount?: T;
+  currency?: T;
+  paymentMethod?: T;
+  status?: T;
+  pollUrl?: T;
+  instructions?: T;
+  paidAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speakers_select".
+ */
+export interface SpeakersSelect<T extends boolean = true> {
+  name?: T;
+  photo?: T;
+  organization?: T;
+  designation?: T;
+  bio?: T;
+  category?: T;
+  expertise?:
+    | T
+    | {
+        topic?: T;
+        id?: T;
+      };
+  linkedin?: T;
+  twitter?: T;
+  website?: T;
+  email?: T;
+  featured?: T;
+  session?:
+    | T
+    | {
+        title?: T;
+        time?: T;
+        location?: T;
+      };
+  sessions?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speaker-applications_select".
+ */
+export interface SpeakerApplicationsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  organization?: T;
+  designation?: T;
+  bio?: T;
+  category?: T;
+  expertise?:
+    | T
+    | {
+        topic?: T;
+        id?: T;
+      };
+  linkedin?: T;
+  twitter?: T;
+  website?: T;
+  session?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs_select".
+ */
+export interface ProgramsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  day?: T;
+  date?: T;
+  startTime?: T;
+  endTime?: T;
+  duration?: T;
+  type?: T;
+  track?: T;
+  speaker?: T;
+  speakerName?: T;
+  speakerTitle?: T;
+  venue?: T;
+  capacity?: T;
+  featured?: T;
+  color?: T;
+  registrationLink?: T;
+  materials?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        url?: T;
+        id?: T;
+      };
+  notes?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  content?: T;
+  featuredImage?: T;
+  author?: T;
+  authorName?: T;
+  authorTitle?: T;
+  authorBio?: T;
+  authorAvatar?: T;
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  readTime?: T;
+  status?: T;
+  publishedAt?: T;
+  featured?: T;
+  trending?: T;
+  likes?: T;
+  comments?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  views?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "previous-summits_select".
+ */
+export interface PreviousSummitsSelect<T extends boolean = true> {
+  year?: T;
+  title?: T;
+  theme?: T;
+  stats?:
+    | T
+    | {
+        delegates?: T;
+        speakers?: T;
+        exhibitors?: T;
+        startups?: T;
+        countries?: T;
+        partnerships?: T;
+        days?: T;
+      };
+  highlights?:
+    | T
+    | {
+        highlight?: T;
+        id?: T;
+      };
+  themes?:
+    | T
+    | {
+        theme?: T;
+        id?: T;
+      };
+  color?: T;
+  gradient?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        description?: T;
+        category?: T;
+        likes?: T;
+        id?: T;
+      };
+  videos?:
+    | T
+    | {
+        thumbnail?: T;
+        videoUrl?: T;
+        title?: T;
+        description?: T;
+        category?: T;
+        likes?: T;
+        id?: T;
+      };
+  status?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery_select".
+ */
+export interface GallerySelect<T extends boolean = true> {
+  type?: T;
+  title?: T;
+  description?: T;
+  category?: T;
+  year?: T;
+  image?: T;
+  videoUrl?: T;
+  thumbnail?: T;
+  views?: T;
+  likes?: T;
+  featured?: T;
+  status?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "school-summit_select".
+ */
+export interface SchoolSummitSelect<T extends boolean = true> {
+  title?: T;
+  section?: T;
+  description?: T;
+  objectiveIcon?: T;
+  skills?:
+    | T
+    | {
+        skill?: T;
+        id?: T;
+      };
+  cardImage?: T;
+  cardVideo?: T;
+  videoType?: T;
+  cardLink?: T;
+  order?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,16 +1277,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "collections_widget".
- */
-export interface CollectionsWidget {
-  data?: {
-    [k: string]: unknown;
-  };
-  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
