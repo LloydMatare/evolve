@@ -474,7 +474,7 @@ export default function Home() {
                   placeholder="Enter your email"
                   className="flex-1 rounded-full border-2 border-white/20 bg-white/10 px-5 py-3 text-white placeholder:text-white/60 focus:border-white/40 focus:outline-none"
                 />
-                <Button className="rounded-full bg-white px-6 text-[var(--brand-blue)] hover:bg-white/90">
+                <Button className="rounded-full bg-white px-6 text-black/80 hover:bg-white/90">
                   Subscribe
                 </Button>
               </div>
@@ -502,7 +502,7 @@ export default function Home() {
                   size="lg"
                   className="rounded-full bg-[var(--brand-gold)] px-7 text-slate-950 hover:bg-[#ffe36b]"
                 >
-                  <Link href="/register">Register Now</Link>
+                  <Link href="/register">Register Now.</Link>
                 </Button>
                 <Button
                   asChild
@@ -511,7 +511,7 @@ export default function Home() {
                   className="rounded-full border-white/16 bg-white/6 px-7 text-white hover:bg-white/12"
                 >
                   <Link href="/partnerships" className="text-white">
-                    Become a Partner
+                    <p className="text-white/80">Become a Partner.</p>
                   </Link>
                 </Button>
               </div>
