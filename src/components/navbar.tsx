@@ -72,11 +72,11 @@ export function Navbar() {
                   href={link.href}
                   className={`relative rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 ${
                     active
-                      ? 'bg-white/10 text-[var(--brand-gold)]'
-                      : 'text-white hover:bg-white/6 hover:text-white'
+                      ? 'bg-white/10 text-white'
+                      : 'text-white/90 hover:bg-white/6 hover:text-white'
                   }`}
                 >
-                  {link.name}
+                  <p className="text-white">{link.name}</p>
                   {active && (
                     <span className="absolute inset-x-4 bottom-1 h-px rounded-full bg-[var(--brand-gold)]"></span>
                   )}
@@ -131,8 +131,8 @@ export function Navbar() {
                         href={link.href}
                         className={`flex items-center rounded-full py-3 pl-4 text-sm font-medium transition-colors duration-200 ${
                           active
-                            ? 'bg-white/8 text-[var(--brand-gold)]'
-                            : 'text-white hover:bg-white/6 hover:text-white'
+                            ? 'bg-white/8 text-white'
+                            : 'text-white/90 hover:bg-white/6 hover:text-white'
                         }`}
                       >
                         {link.name}

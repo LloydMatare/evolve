@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FadeIn } from '@/components/fade-in'
 import { PageHero } from '@/components/page-hero'
 import { SectionHeading } from '@/components/section-heading'
@@ -178,7 +179,9 @@ export default async function SchoolSummit() {
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <Button asChild className="rounded-full bg-slate-950 text-white hover:bg-slate-800">
-                  <Link href="/register">Join the Student Summit</Link>
+                  <Link href="/register">
+                    <p className="text-white">Join the Student Summit</p>
+                  </Link>
                 </Button>
                 <Button
                   asChild

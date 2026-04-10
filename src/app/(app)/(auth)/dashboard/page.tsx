@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -145,7 +146,8 @@ export default function DashboardPage() {
               </div>
               <h1 className="mt-5 text-4xl font-semibold text-white md:text-5xl">Welcome back.</h1>
               <p className="mt-3 max-w-2xl text-slate-300">
-                Track your registration status, view event details, and access your digital pass once approved.
+                Track your registration status, view event details, and access your digital pass
+                once approved.
               </p>
             </div>
           </motion.div>

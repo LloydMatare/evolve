@@ -369,7 +369,7 @@ export default function ProgramPage() {
               />
 
               <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-            {/* Day Selector */}
+                {/* Day Selector */}
                 <div className="flex flex-wrap gap-2">
                   {eventDays.map((day) => (
                     <Button
@@ -388,7 +388,7 @@ export default function ProgramPage() {
                   ))}
                 </div>
 
-            {/* Search */}
+                {/* Search */}
                 <div className="relative lg:w-[26rem]">
                   <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <Input
@@ -401,7 +401,7 @@ export default function ProgramPage() {
                 </div>
               </div>
 
-          {/* Filters */}
+              {/* Filters */}
               <div className="mt-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
@@ -409,7 +409,7 @@ export default function ProgramPage() {
                     Filters
                   </div>
 
-              {/* Track Filters */}
+                  {/* Track Filters */}
                   <div className="flex flex-wrap gap-2">
                     {tracks.map((track) => (
                       <Button
@@ -426,7 +426,7 @@ export default function ProgramPage() {
                   </div>
                 </div>
 
-            {/* Session Type Filters */}
+                {/* Session Type Filters */}
                 <div className="mt-4 flex flex-wrap gap-2">
                   {sessionTypes.map((type) => (
                     <Button
@@ -594,29 +594,29 @@ export default function ProgramPage() {
             <FadeIn>
               <div className="event-surface rounded-[2rem] p-8 md:p-10">
                 <h3 className="text-2xl font-semibold text-slate-950 mb-6">Session Type Legend</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {sessionTypes.slice(1).map((type) => (
-                <div
-                  key={type.id}
-                  className="flex items-center gap-3 rounded-[1.25rem] border border-slate-200/70 bg-white/80 p-4"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[rgba(67,97,238,0.12)] text-[var(--brand-blue)]">
-                    {type.icon}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-950">{type.name}</p>
-                    <p className="text-xs text-slate-500">
-                      {type.id === 'keynote' && 'Main presentations'}
-                      {type.id === 'panel' && 'Group discussions'}
-                      {type.id === 'workshop' && 'Hands-on sessions'}
-                      {type.id === 'talk' && 'Expert presentations'}
-                      {type.id === 'networking' && 'Social events'}
-                      {type.id === 'break' && 'Refreshment breaks'}
-                    </p>
-                  </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  {sessionTypes.slice(1).map((type) => (
+                    <div
+                      key={type.id}
+                      className="flex items-center gap-3 rounded-[1.25rem] border border-slate-200/70 bg-white/80 p-4"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[rgba(67,97,238,0.12)] text-[var(--brand-blue)]">
+                        {type.icon}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-950">{type.name}</p>
+                        <p className="text-xs text-slate-500">
+                          {type.id === 'keynote' && 'Main presentations'}
+                          {type.id === 'panel' && 'Group discussions'}
+                          {type.id === 'workshop' && 'Hands-on sessions'}
+                          {type.id === 'talk' && 'Expert presentations'}
+                          {type.id === 'networking' && 'Social events'}
+                          {type.id === 'break' && 'Refreshment breaks'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
               </div>
             </FadeIn>
           </div>
@@ -652,7 +652,9 @@ export default function ProgramPage() {
                     variant="outline"
                     className="rounded-full border-white/16 bg-white/6 px-7 text-white hover:bg-white/12"
                   >
-                    <a href="/speakers">View Speakers</a>
+                    <a href="/speakers">
+                      <p className="text-white">View Speakers</p>
+                    </a>
                   </Button>
                 </div>
               </div>

@@ -510,7 +510,9 @@ export default function Home() {
                   variant="outline"
                   className="rounded-full border-white/16 bg-white/6 px-7 text-white hover:bg-white/12"
                 >
-                  <Link href="/partnerships">Become a Partner</Link>
+                  <Link href="/partnerships" className="text-white">
+                    Become a Partner
+                  </Link>
                 </Button>
               </div>
             </div>

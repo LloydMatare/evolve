@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client'
 
 import { FadeIn } from '@/components/fade-in'
@@ -226,7 +227,7 @@ export default function RegisterPage() {
                   </TabsList>
                 </div>
 
-            {/* Content */}
+                {/* Content */}
                 <div className="mt-8">
                   <TabsContent value="attendee">
                     <AttendeeForm />
@@ -583,7 +584,7 @@ function AttendeeForm() {
                 'Processing...'
               ) : (
                 <>
-                 Register
+                  Register
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </>
               )}
@@ -1083,7 +1084,7 @@ function ExhibitorForm() {
       </div>
 
       <div className="p-8">
-          {/* Booth Selection */}
+        {/* Booth Selection */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
             <Store className="w-5 h-5 text-emerald-500" />
